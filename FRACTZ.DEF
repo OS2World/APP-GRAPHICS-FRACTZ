@@ -1,0 +1,8 @@
+NAME    style  WINDOWAPI
+
+DESCRIPTION 'FRACTZ - fractal creater (c) 1993, 1994 Tom Stokes'
+
+CODE    MOVEABLE
+DATA    MOVEABLE MULTIPLE
+
+

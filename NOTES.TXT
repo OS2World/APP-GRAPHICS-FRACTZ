@@ -1,0 +1,37 @@
+
+  A quick route to the BMPs
+
+
+1.  Julia
+    spirals
+    xl,xr,yb,yt = -1.534/1.495/-0.896/.8792
+    dx/dy = -0.7528/-0.113757
+
+2. Julia
+   spirals
+   xl... = -1.55/1.5/-0.8816/1.4
+   dx/dy = -0.750407/-0.071031
+
+3. Julia
+   Big Spiral with "dry river bed" - double corkscrew
+   xl... = -0.79/-0.028/-0.45/0.56
+   dx/dy = -0.756591/-0.101023
+   inside = 254, ceilh = 500
+   alpha/beta/phi = 15/0/-20
+
+4. Julia
+   Burnadino Mtns.
+   xl.. = -.175841/0.178899/-.124638/0.195652
+   dx,dy = -1.768756/-0.00241
+   ceilheight = 1400.0, inside = 255
+   alpha/beta/phi = 20/0/-30
+
+5. Julia
+   Triple corkscrews
+   xl/...  = -1.512/1.271/-1.182/1.224
+   dx,dy   = -0.076617/-0.654732
+   ceilht = 307
+   alph/beta/phi = 10/0/-30
+
+
+

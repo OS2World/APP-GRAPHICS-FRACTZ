@@ -1,0 +1,280 @@
+         
+                                   FRACTZ
+
+         
+ I. Introduction 
+         
+ FRACTZ is a fractal drawing program for the OS/2 Presentation Manager.  It is 
+ the result of a project I undertook solely for the purpose of learning how to 
+ program for OS/2.  There are PM programming details within FRACTZ that had me 
+ stumped for weeks on end.  The answers are out there, but finding them can be 
+ difficult and time consuming.  It is for this reason that I decided to donate 
+ it to the public, lock-stock-and-barrel, in the hopes of smoothing the bumps 
+ for anyone thinking of taking the same venture.  I also hope that some are 
+ inspired by the beauty in fractals.  They are an amazing area where science 
+ meets art.  
+
+         
+ II.  Legal 
+         
+ The executable file, the C source code, and the assorted ancillary files are 
+ free, but I retain the ownership and copyright.  The program is designed to 
+ run on any machine running OS/2 2.0 or higher, but it carries no guarantee of 
+ any kind.  
+         
+
+ III.  The Beginning 
+         
+ I am a fan of OS/2 and I am a programmer, but I'm not professionally into PM 
+ programming.  It was something I wanted to learn, so about a year ago I 
+ purchased both the IBM and Borland OS/2 compilers.  I also needed a project 
+ to start up my learning ramp.  I've always admired the beauty of fractals and 
+ have been long time fan of FRACTINT.  For those that don't know, FRACTINT is 
+ a free DOS fractal drawing program that has been worked on by numerous 
+ people.  Collectively they are known as the Stone Soup Group.  The name 
+ springs from an interesting parable, which I'll leave up to you to find and 
+ read.  There are now versions of FRACTINT for Windows and even OS/2.  
+         
+ Another reason for choosing a fractal program was that I already had some DOS 
+ C code that I had started on some years ago, but had given up as being too 
+ much work.  You will probably see some remnants of this program in FRACTZ, 
+ like in the identifier "int".  Lastly, and most importantly from a technical 
+ point, I owned and had almost memorized the Waite book "Fractal Creations" by 
+ Tim Wegner and Mark Peterson.  These are two Stone Soup Group members and it 
+ is the definitive book for doing fractals on a PC.  A second edition of this 
+ book is now out.  I haven't seen it, but I understand it is much improved, 
+ although I don't see how.  Lastly, I would like to mention Bert Tyler.  He is 
+ the guy that shook the bushes that started the stampede.  Some of his 
+ personal suggestions are incorporated into FRACTZ.  
+         
+ The Stone Soup Group hangs out on Compuserve in the GRAPHDEV forum, and I 
+ have gone to them on more than several occasions for technical details.  They 
+ are always willing to help.  One thing I need to mention is that the ASCII 
+ text color maps that are in the FRACTZ package came from FRACTINT.  I am 
+ including them with the permission of the Stone Soup Group.  That is 
+ something I couldn't do if FRACTZ wasn't free.  
+                                         
+         
+ IV.  The PM program and Some Caveats 
+         
+ As I wrote this program, I did not envision it going anywhere.  It was 
+ strictly a learning effort on my part.  For that reason, it may not work 
+ properly on your machine.  I use a 486/33DX which has a Tseng ET4000 running 
+ at 800X600 resolution with 256 colors.  The .EXE file has in-line FPU code 
+ and I don't know what it will do on a machine without an FPU.  I wouldn't 
+ attempt this without an FPU anyway.  A similar statement holds about using 
+ it with a different numbers of colors or resolution.  It should work, but I 
+ just don't know.  I didn't write it to run on different machines and have 
+ never seen it attempted.  
+         
+ Unfortunately, the fractal calculations are incredibly slow.  This is 
+ something which I attribute to a number of reasons.  The first is that I used 
+ type "complex" to ease the coding burden.  (FRACTINT, on the other hand, 
+ makes use of type long int.)  Type "complex" is one of the reasons it is a 
+ C++ program, although it is not OOP.  I looked at some compiled code and was 
+ horrified, but that is another subject.  Secondly, to reach a color depth of 
+ 255, you may need to iterate up to 256 times at each pixel.  Thus, it may be 
+ necessary to evaluate a complex expression some 800X600X256 times in the 
+ worst case.  Take that number and multiply by the horrendous machine code and 
+ you will understand the problem.  
+         
+ One nice thing about OS/2 of course, is that you can just move the fractal 
+ window out of the way and go on about other things.  However, I need to bring 
+ up a word of caution here.  If you change the aspect ratio of the window, the 
+ fractal will tear.  I know it is possible to bit-blast from one sized 
+ rectangle to another, but in this case, you will actually change the equation 
+ of the fractal while it is in the process of being computed.  That's why it's 
+ a no-no.  There may be a way of doing this without tearing the fractal, but I 
+ think it would involve calculating out-of-window points and I don't think 
+ that would be a good idea.  
+         
+         
+ V. Technical 
+         
+ I can only give a sampling on fractals, as you really need a book.  All of 
+ the fractals in FRACTZ are what is known as "escape-time" fractals with one 
+ or two also possessing "finite-attracters".  One of the most famous is the 
+ Mandelbrot.  It's entire description is contained in this one "simple" 
+ equation:  
+         
+     z = z*z + c
+         
+ This is an iterative equation with both z and c being complex numbers of the 
+ form (x+iy), i.e.  they correspond to points on the screen (or window) of 
+ your CRT.  The point, c, is the independent variable which comes from 
+ scanning horizontally in x then vertically in y. The first z point, z0, is 
+ taken to be the origin, or (0,0).  Thus, given a c (a particular pixel), one 
+ simply computes z1, z2, z3....  until one of two things happen.  1) You 
+ escape outside a circle of radius = 2 (hence the "escape-time" name) or 2) 
+ you never escape and are cut-off by some other criteria for maximum number of 
+ iterations.  This is called MAXITER and it is usually taken as some number 
+ say of at least 100.  The default in FRACTZ is the color depth, 255.  Thus, 
+ the color of a pixel (or more accurately the index into the RGB color table) 
+ is simply the number of iterations it takes to escape.  If it hits MAXITER 
+ without escaping, it is a color of your choosing.  
+         
+ The Mandelbrot equation never converges, but some escape-time equations do.  
+ Such equations actually have a finite number of roots that will be found with 
+ the above iteration scheme.  These are the finite-attracters, and there are 
+ a few of these in FRACTZ.  This fractal type simply adds one more cutoff 
+ criterion of "have I converged on a root?".  
+         
+ I'm sure one can see from the above expression why I chose type complex, but 
+ the simplicity totally belies what's hidden within.  Clearly, it is also easy 
+ to add additional fractal formulas, being largely a matter of adding a 
+ one-line case to a switch statement.  
+         
+
+ VI.  Operation 
+         
+ I don't have an installation procedure.  I would recommend installing FRACTZ 
+ in its own directory and using a program template to create a desktop object.  
+ FRACTZ will look for the color maps (*.MAP files) in its own directory.  Not 
+ finding any will cause it to generate a random map, and that map is not very 
+ pretty.  Also, remember you will be unzipping .C, .RC, etc.  so there are a
+ good number of files.  There are even some bitmap files I created with 
+ FRACTZ.  I use one for my shutdown screen.  The program comes up running.  
+ In fact, you can't stop it.  The (background) fractal engine thread runs 
+ full-speed all the time and is drawing to a memory PS.  There is another 
+ small thread that wakes up from a DosSleep every few seconds and blasts the 
+ bits from a memory PS to the VDT.  Hence it appears to jump every time this 
+ thread wakes up.  
+         
+ There is no real help once you are up and running.  I only hope the menus and 
+ dialogs are obvious enough.  Having previous experience with FRACTINT would 
+ be a big help here.  
+         
+ First, the mouse operations:  
+         
+    1. LMB (left mouse button) diagonal drag creates a "zoom box".  This will
+    be the new window when you release the button.  A tiny box will act as a
+    cancel.
+         
+    2. LMB double-click clears the window to black and restarts the
+    calculation.
+         
+    3. RMB click will start a Julia fractal with initial conditions based on
+    the (x,y) location of the mouse pointer.  Again, pick an interesting (e.g.
+    ragged) area to click.
+         
+ There are not very many fractal types to choose from in the menu, but I think 
+ you will be surprised at how much you can do with these.  Notice that you can 
+ save-to/restore-from a BMP (bitmap file) at any time.  Look at some of the 
+ ones that I supplied.  This will not destroy any preceding calculations as 
+ they are being written to a memory PS.  These bitmaps are the 2.x variety and 
+ you can look at any 2.x bitmap.  I did not bother supporting 1.x bitmap, 
+ although it shouldn't be hard to add.  Note that you cannot restart a 
+ calculation from a BMP file, although it is something I have considered 
+ adding.  For now, you can only "un-view" it to get back to where you were.  
+         
+ The next menu item is the display option.  By all means check out the 
+ "orbits" option, but turn out the lights first.  I was really surprised by 
+ how well this turned out.  Books rarely mention this feature because the 
+ "neatness" is all in the dynamics.  Also, it is hard to do without multiple 
+ presentation spaces, so thanks IBM.  Take a look before you zoom in or you 
+ may not see much.  That is not because the "fractoids" aren't there, but 
+ probably because they are orbiting over your neighbor's house or even over 
+ another city.  These orbits come straight from the fractal engine and this 
+ option will slow it down a lot, but it's worth it.  
+         
+ The "change colors" option comes from my somewhat feeble attempt to imitate 
+ FRACTINT's color cycling option.  FRACTINT grabs the hardware video registers 
+ to create a dazzling color show.  That is something I couldn't do, but I left 
+ this option in anyway.  Basically, it runs small color wavelets up and down 
+ the RGB table to produce somewhat smooth and somewhat random time-color 
+ variations.  
+         
+ The Settings option produces the only dialog box in FRACTZ.  This is a hard 
+ option to get across in a README, so I hope probing around will be more 
+ fruitful than what I can say here.  The Box Coordinates define the scale of 
+ the fractal and are XL, XR, YB, YT for x-left, x-right, y-bottom, y-top.  
+ Normally, you don't enter these.  They start at some default and change as 
+ you zoom in.  
+         
+ The perturbations, called Real Pert.(dX) and Imag. Pert.(dY) in the
+ dialog box, are a way of throwing a twist into the fractal calculations.  
+ Again, I would suggest the book (or the C source) to see what they really do.  
+ It is not necessary to mess with them except in the case of the Lambda 
+ fractal.  For that, start with some- thing close to what is in the "hint 
+ box".  
+         
+ The "Maxiter" that is in the dialog box is the iteration cutoff and has 
+ already been discussed.  It defaults to the (my) color depth of 255.  
+ Changing it to something like 150 will speed things up, but reduce the number 
+ of colors.  The Bailout term is the radius of the bailout circle where 
+ calculations are stopped.  That is, the fractoid has "escaped" if abs(z) > 
+ bailout.  Please note - the FRACTINT authors (and the book) use "bailout" to 
+ mean the square of the radius so that they can avoid a square root operation.  
+ I.E.  FRACTINT tests if (x**2 + y**2 > bailout).  Thus you will see their 
+ value of bailout is 4 where I use 2. 
+         
+ The dialog item "Inside" is what sets the RGB color if the iteration hits 
+ Maxiter before escaping.  The term "inside" comes from the lake-like feature 
+ in the center of the Mandelbrot fractal.  Any iteration that starts within 
+ the lake will not escape.  "Inside" means inside the lake and the default 
+ value is 1 which is blue.  However, if you switch to 3-D mode, I would 
+ suggest making the value 255.  This will switch the lake to a mountain 
+ plateau.  
+         
+ There is a check box called "use potential".  I think this is a method based 
+ on some formula from potential theory, but whatever the case, the purpose is 
+ to smooth out a fractal image for making 3-D renderings.  The idea is that 
+ instead of using the count value when a fractoid escapes, you use the 
+ logarithm of the radius after it escapes.  Sorry, I never did get this to 
+ work properly.  
+         
+ The next two regions of the dialog box are for doing spherical projections 
+ and 3-D surfaces.  You can also do 3-D spheres.  The purpose of the 
+ "covers-180" versus "covers-360" determines how much of the spherical fractal 
+ you want to see.  180 degrees will show all, but will show as a hemisphere if 
+ you also select 3-D.  
+          
+ The box labeled "Ceiling Ht."  is what scales the height of the fractal in 
+ 3-D.  FRACTZ uses color as the height, so some number larger than 255 is 
+ required in order to see the full picture.  I have used values greater than 
+ 2,000 in order to "flatten" the mountains.  
+         
+ Lastly come the rotation angles.  Alpha, beta, and phi are the rotation 
+ angles about x,y, and z using the right-hand rule (this z is perpendicular to 
+ the x-y plane.  It is not the complex z).  However, before doing the 
+ rotation, I flipped the fractal to view it edge on.  In other words, for 
+ rotation angles of (0,0,0), you would see the fractal with the x-axis 
+ horizontal and increasing to the right, the z-axis (color) would be vertical 
+ and increasing upward, and the y-axis would be normal to the screen and 
+ increasing in the direction you are viewing.  By doing this, I get best 
+ results by keeping all angles somewhat small, about (+/-) 15-20 degrees or 
+ so.  This is somehow more palatable to me than using rotation angles like 75 
+ degrees.  
+         
+ If you switch into 3-D, you need to start with a completely clear, black 
+ window.  Double click the left mouse button to do this as it does not happen 
+ automatically.  It used to, but I shot myself in the foot too many times.  
+ The reason it needs black is that the 3-D option uses a ray tracing technique 
+ to not have background objects write over foreground objects.  When the 
+ program encounters a 3-D black pixel, it means "I haven't been here yet", 
+ which is something it needs to know in order to work properly.  By the way, I 
+ think the Julia fractals have the most interesting 3-D shapes.  I should also 
+ mention here that a phi-rotation is a rotation about the polar axis in 
+ spherical coordinates.  
+         
+ The last menu item is choice of color map.  Unlike what FRACTINT does, I 
+ elected to hard code the file names right into the code.  Yes, I know, this 
+ is not a good programming practice, but it is particularly effective.  
+ These are small files, and because we all have a good diskcache, you get 
+ almost immediate response with one click.  These maps are a work of art in 
+ themselves and my hat is off to the Stone Soup Group again.  They can bring 
+ out surprising details you just can't see any other way.  Always try some of 
+ the color maps if you feel like you are getting bored.  
+         
+ Well, enough has been said.  I hope it is understandable and that someone can 
+ make use of this.  If you have any questions, I will be glad to answer what I 
+ can.  I am usually around OS2DF1 on Compuserve.  
+         
+
+ Tom Stokes
+
+ 1/19/94
+         
+ CIS id 73770,3577 
+         
+

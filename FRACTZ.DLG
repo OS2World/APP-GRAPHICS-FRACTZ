@@ -1,0 +1,118 @@
+DLGINCLUDE 1 "FRACTZ.H"
+
+DLGTEMPLATE IDD_HELP PRELOAD MOVEABLE DISCARDABLE 
+BEGIN
+	DIALOG "FRACTZ - Product Information", IDD_HELP, 40, 98, 300, 102, FS_NOBYTEALIGN | FS_BORDER | FS_SCREENALIGN | WS_VISIBLE, FCF_TITLEBAR
+	BEGIN
+		CTEXT "FRACTZ", ID_NULL, 50, 87, 200, 10
+		CTEXT "An OS/2 PM Graphics Demonstration", ID_NULL, 45, 72, 210, 10
+		CTEXT "Copyright Tom Stokes, April 1993.", ID_NULL, 20, 57, 260, 10
+		ICON ID_WINDOW, ID_NULL, 10, 67, 32, 32, WS_GROUP
+		DEFPUSHBUTTON "OK", IDS_NOREGISTER, 120, 22, 50, 15
+	END
+
+END
+
+DLGTEMPLATE DLG_SETTINGS LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "SETTINGS", DLG_SETTINGS, 31, 8, 410, 251, WS_VISIBLE, 
+            FCF_SYSMENU | FCF_TITLEBAR
+            PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        ENTRYFIELD      "XL", DLG_XLEFT, 34, 205, 60, 10, ES_MARGIN
+        ENTRYFIELD      "XR", DLG_XRIGHT, 34, 190, 61, 10, ES_MARGIN
+        ENTRYFIELD      "YB", DLG_YBOTTOM, 33, 175, 61, 10, ES_MARGIN
+        ENTRYFIELD      "YT", DLG_YTOP, 34, 160, 60, 10, ES_MARGIN
+        ENTRYFIELD      "REALDX", DLG_REALNO, 209, 205, 61, 10, ES_MARGIN
+        ENTRYFIELD      "IMAGDY", DLG_IMAGNO, 209, 190, 60, 10, ES_MARGIN
+        ENTRYFIELD      "MAXITER", DLG_MAXITER, 209, 175, 59, 10, ES_MARGIN
+        ENTRYFIELD      "BAILOUT", DLG_BAILOUT, 209, 160, 59, 10, ES_MARGIN
+        ENTRYFIELD      "1", DLGA_INSIDECOLOR, 344, 205, 27, 10, ES_MARGIN
+        ENTRYFIELD      "1.0", DLG_SPHERERAD, 208, 124, 27, 9
+        ENTRYFIELD      "50.0", DLGA_MAXHT, 21, 68, 35, 11, ES_MARGIN
+        DEFPUSHBUTTON   "OK", IDS_NOREGISTER, 6, 4, 51, 14
+        PUSHBUTTON      "Cancel", IDS_NOSTDWINDOWS, 71, 4, 51, 14
+        PUSHBUTTON      "Help", 998, 134, 3, 51, 14, BS_HELP
+        ENTRYFIELD      "NAME", IDM_RESET, 99, 240, 100, 10, ES_CENTER | 
+                        ES_MARGIN | WS_GROUP
+                        PRESPARAMS PP_HILITEBACKGROUNDCOLOR, 0x00000000L
+        ENTRYFIELD      "FORMULA", DLG_FORMULA, 99, 225, 100, 10, ES_CENTER | 
+                        ES_MARGIN | WS_GROUP
+        ENTRYFIELD      "EXAMPLE", DLG_EXAMPLEPERTS, 227, 231, 64, 10, 
+                        ES_CENTER | ES_MARGIN | WS_GROUP
+        RTEXT           "XL =", 112, 7, 205, 19, 8, DT_VCENTER | DT_MNEMONIC
+        RTEXT           "XR =", 113, 7, 190, 19, 8, DT_VCENTER | DT_MNEMONIC
+        RTEXT           "YB =", 114, 7, 175, 19, 8, DT_VCENTER | DT_MNEMONIC
+        RTEXT           "YT =", 115, 6, 160, 20, 8, DT_VCENTER | DT_MNEMONIC
+        RTEXT           "Bailout =", 116, 154, 160, 50, 10, DT_VCENTER | 
+                        DT_MNEMONIC
+        RTEXT           "Maxiter =", 117, 154, 175, 50, 8, DT_VCENTER | 
+                        DT_MNEMONIC
+        RTEXT           "Imag Pert. (dY) =", 118, 119, 190, 85, 8, 
+                        DT_VCENTER | DT_MNEMONIC
+        RTEXT           "Real Pert. (dX) =", 119, 119, 205, 85, 8, 
+                        DT_VCENTER | DT_MNEMONIC
+        CTEXT           "Hint Perturbation", 120, 224, 242, 70, 8, 
+                        DT_VCENTER | DT_MNEMONIC
+        CTEXT           "Box Coordinates", 121, 7, 222, 65, 8, DT_VCENTER | 
+                        DT_MNEMONIC
+        AUTOCHECKBOX    "spherical", DLG_SPHERICAL, 9, 137, 7, 7, WS_GROUP
+        AUTORADIOBUTTON "dlga180", DLG_180, 71, 131, 9, 8, WS_GROUP | 
+                        WS_TABSTOP
+        AUTORADIOBUTTON "dlga360", DLG_360, 71, 119, 7, 6, WS_TABSTOP
+        RTEXT           "Radius =", 110, 157, 124, 45, 8, DT_VCENTER | 
+                        DT_MNEMONIC | NOT WS_GROUP
+        LTEXT           "Sphere", 111, 23, 137, 29, 8, DT_VCENTER | 
+                        DT_MNEMONIC
+        LTEXT           "Covers 180", 106, 82, 131, 52, 8, DT_VCENTER | 
+                        DT_MNEMONIC | NOT WS_GROUP
+        LTEXT           "Covers 360", 107, 83, 118, 50, 8, DT_VCENTER | 
+                        DT_MNEMONIC | NOT WS_GROUP
+        GROUPBOX        "hemi / full", 108, 69, 114, 66, 35, DT_MNEMONIC
+        DEFPUSHBUTTON   "OK", DLG_REALTITLE, 33, -18, 51, 14
+        PUSHBUTTON      "Cancel", DLG_IMAGTITLE, 87, -18, 51, 14
+        PUSHBUTTON      "Help", 105, 141, -18, 51, 14, BS_HELP
+        CONTROL         "phi", DLGA_PHI, 114, 32, 280, 20, WC_SLIDER, 
+                        SLS_HORIZONTAL | SLS_CENTER | SLS_LEFT | 
+                        SLS_BUTTONSLEFT | SLS_HOMELEFT | SLS_PRIMARYSCALE1 | 
+                        WS_VISIBLE
+                        CTLDATA 12, 0, 181, 0, 181, 0
+        CONTROL         "beta", DLGA_BETA, 113, 58, 280, 20, WC_SLIDER, 
+                        SLS_HORIZONTAL | SLS_CENTER | SLS_LEFT | 
+                        SLS_BUTTONSLEFT | SLS_HOMELEFT | SLS_PRIMARYSCALE1 | 
+                        WS_VISIBLE
+                        CTLDATA 12, 0, 181, 0, 181, 0
+        CONTROL         "alpha", DLGA_ALPHA, 113, 84, 280, 18, WC_SLIDER, 
+                        SLS_HORIZONTAL | SLS_CENTER | SLS_LEFT | 
+                        SLS_BUTTONSLEFT | SLS_HOMELEFT | SLS_PRIMARYSCALE1 | 
+                        WS_VISIBLE
+                        CTLDATA 12, 0, 181, 0, 181, 0
+        AUTOCHECKBOX    "usepotential", DLGA_USEPOTENTIAL, 321, 164, 8, 8, 
+                        WS_GROUP
+        RTEXT           "Alpha", 125, 87, 88, 23, 8, DT_VCENTER | 
+                        DT_MNEMONIC | NOT WS_GROUP
+        RTEXT           "Beta", 126, 91, 63, 20, 7, DT_VCENTER | DT_MNEMONIC | 
+                        NOT WS_GROUP
+        RTEXT           "Phi", 127, 93, 39, 16, 6, DT_VCENTER | DT_MNEMONIC | 
+                        NOT WS_GROUP
+        RTEXT           "Inside =", 128, 309, 206, 30, 8, DT_VCENTER | 
+                        DT_MNEMONIC | WS_TABSTOP
+        CTEXT           "Ceiling Ht.", 130, 20, 81, 36, 7, DT_VCENTER | 
+                        DT_MNEMONIC
+        CONTROL         "Sample", 131, 3, 151, 405, 2, WC_STATIC, 
+                        SS_FGNDFRAME | WS_GROUP | WS_VISIBLE
+        CONTROL         "Sample", 132, 0, 109, 409, 2, WC_STATIC, 
+                        SS_FGNDFRAME | WS_GROUP | WS_VISIBLE
+        CONTROL         "Sample", 133, 1, 24, 408, 1, WC_STATIC, 
+                        SS_FGNDFRAME | WS_GROUP | WS_VISIBLE
+        CONTROL         "Sample", 134, 312, 153, 96, 30, WC_STATIC, 
+                        SS_FGNDFRAME | WS_GROUP | WS_VISIBLE
+        AUTOCHECKBOX    "3d", DLGA_THREED, 9, 94, 8, 8, WS_GROUP
+        LTEXT           "3-D", 21, 23, 93, 27, 8, DT_VCENTER | DT_MNEMONIC
+        LTEXT           "Use Potential", DLGA_USEPOTENTIAL, 331, 164, 45, 8, 
+                        DT_VCENTER | DT_MNEMONIC | NOT WS_GROUP
+        AUTORADIOBUTTON "Yes", DLG_AUTOYES, 20, 42, 28, 9, WS_TABSTOP
+        AUTORADIOBUTTON "No", DLG_AUTONO, 20, 30, 25, 10, WS_TABSTOP
+        GROUPBOX        "Autoscale", 22, 18, 30, 56, 30, DT_MNEMONIC
+    END
+END
